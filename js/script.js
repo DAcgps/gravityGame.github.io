@@ -23,7 +23,7 @@
 
 
 $(document).ready(function() {
-    const questions = [
+    const allQuestions = [
         {
             question: "What is the acceleration due to gravity on Earth?",
             answers: ["9.8 m/s²", "5 m/s²", "12.5 m/s²", "7.5 m/s²"],
@@ -48,9 +48,35 @@ $(document).ready(function() {
             question: "What is the term for the point where the gravitational forces of two bodies balance each other?",
             answers: ["Center of Mass", "Gravitational Equilibrium", "Lagrange Point", "Event Horizon"],
             correct: "Lagrange Point"
+        },
+        {
+            question: "What causes tides on Earth?",
+            answers: ["Winds", "Sun's Heat", "Moon's Gravity", "Earth's Rotation"],
+            correct: "Moon's Gravity"
+        },
+        {
+            question: "Which scientist is known for his theory of general relativity?",
+            answers: ["Albert Einstein", "Niels Bohr", "James Clerk Maxwell", "Michael Faraday"],
+            correct: "Albert Einstein"
+        },
+        {
+            question: "What is a black hole?",
+            answers: ["A star", "A planet", "A region of space where gravity is so strong that nothing can escape", "A type of galaxy"],
+            correct: "A region of space where gravity is so strong that nothing can escape"
+        },
+        {
+            question: "What is the escape velocity from Earth?",
+            answers: ["7 km/s", "11.2 km/s", "15 km/s", "20 km/s"],
+            correct: "11.2 km/s"
+        },
+        {
+            question: "What does the gravitational force depend on?",
+            answers: ["Charge", "Mass and distance", "Volume", "Speed"],
+            correct: "Mass and distance"
         }
     ];
 
+    let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
 
@@ -59,6 +85,11 @@ $(document).ready(function() {
             const j = Math.floor(Math.random() * (i + 1));
             [array[i], array[j]] = [array[j], array[i]];
         }
+    }
+
+    function selectRandomQuestions() {
+        shuffle(allQuestions);
+        questions = allQuestions.slice(0, 5);
     }
 
     function loadQuestion() {
@@ -130,7 +161,7 @@ $(document).ready(function() {
         $('.special-message').remove();
         $('.confetti').remove();
         $('body').css('background-color', '#f0f8ff'); // Reset background color
-        shuffle(questions);
+        selectRandomQuestions();
         loadQuestion();
     }
 
@@ -138,7 +169,8 @@ $(document).ready(function() {
         resetGame();
     });
 
-    // Initial shuffle and load of questions
-    shuffle(questions);
+    // Initial setup
+    selectRandomQuestions();
     loadQuestion();
 });
+
