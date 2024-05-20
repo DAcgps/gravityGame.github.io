@@ -54,6 +54,13 @@ $(document).ready(function() {
     let currentQuestionIndex = 0;
     let score = 0;
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function loadQuestion() {
         const $questionContainer = $('#question-container');
         $questionContainer.empty();
@@ -92,6 +99,26 @@ $(document).ready(function() {
         $questionContainer.empty();
         const $resultElement = $('#result');
         $resultElement.text(`You scored ${score} out of ${questions.length}!`);
+
+        if (score === 5) {
+            $('body').css('background-color', '#ffeb3b'); // Change background color to yellow
+            const $specialMessage = $('<div></div>')
+                .addClass('special-message')
+                .text('Perfect Score! Congratulations!');
+            $('#game').append($specialMessage);
+
+            // Add confetti
+            for (let i = 0; i < 100; i++) {
+                const $confetti = $('<div></div>').addClass('confetti');
+                $confetti.css({
+                    left: Math.random() * 100 + 'vw',
+                    top: Math.random() * -20 + 'vh',
+                    animationDuration: Math.random() * 3 + 2 + 's'
+                });
+                $('body').append($confetti);
+            }
+        }
+
         $('#play-again').show();
     }
 
@@ -100,6 +127,10 @@ $(document).ready(function() {
         score = 0;
         $('#result').empty();
         $('#play-again').hide();
+        $('.special-message').remove();
+        $('.confetti').remove();
+        $('body').css('background-color', '#f0f8ff'); // Reset background color
+        shuffle(questions);
         loadQuestion();
     }
 
@@ -107,5 +138,7 @@ $(document).ready(function() {
         resetGame();
     });
 
+    // Initial shuffle and load of questions
+    shuffle(questions);
     loadQuestion();
 });

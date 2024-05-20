@@ -35,3 +35,20 @@ body {
 #play-again:hover {
     background-color: #45a049;
 }
+.special-message {
+    font-size: 1.5em;
+    color: gold;
+    margin-top: 20px;
+}
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: gold;
+    animation: confetti-fall 1s linear infinite;
+}
+@keyframes confetti-fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
