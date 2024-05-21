@@ -73,6 +73,31 @@ $(document).ready(function() {
             question: "What does the gravitational force depend on?",
             answers: ["Charge", "Mass and distance", "Volume", "Speed"],
             correct: "Mass and distance"
+        },
+        {
+            question: "Who discovered the law of universal gravitation?",
+            answers: ["Galileo Galilei", "Johannes Kepler", "Isaac Newton", "Edwin Hubble"],
+            correct: "Isaac Newton"
+        },
+        {
+            question: "What is the gravitational constant (G)?",
+            answers: ["6.67 × 10^-11 N(m/kg)^2", "9.81 m/s²", "3.00 × 10^8 m/s", "1.60 × 10^-19 C"],
+            correct: "6.67 × 10^-11 N(m/kg)^2"
+        },
+        {
+            question: "What is microgravity?",
+            answers: ["Zero gravity", "Very weak gravity", "Anti-gravity", "Simulated gravity"],
+            correct: "Very weak gravity"
+        },
+        {
+            question: "Which of the following affects gravitational force?",
+            answers: ["Distance", "Mass", "Charge", "Both distance and mass"],
+            correct: "Both distance and mass"
+        },
+        {
+            question: "How does gravity on Mars compare to Earth?",
+            answers: ["About 0.38 times Earth's gravity", "About the same as Earth's gravity", "About 2 times Earth's gravity", "No gravity"],
+            correct: "About 0.38 times Earth's gravity"
         }
     ];
 
@@ -90,6 +115,11 @@ $(document).ready(function() {
     function selectRandomQuestions() {
         shuffle(allQuestions);
         questions = allQuestions.slice(0, 5);
+    }
+
+    function updateProgressBar() {
+        const progress = (currentQuestionIndex / questions.length) * 100;
+        $('#progress-bar').css('width', progress + '%');
     }
 
     function loadQuestion() {
@@ -114,6 +144,8 @@ $(document).ready(function() {
                 });
             $questionContainer.append($answerElement);
         });
+
+        updateProgressBar();
     }
 
     function selectAnswer(answer) {
@@ -151,6 +183,7 @@ $(document).ready(function() {
         }
 
         $('#play-again').show();
+        updateProgressBar(); // Ensure the progress bar shows full completion
     }
 
     function resetGame() {
@@ -173,4 +206,5 @@ $(document).ready(function() {
     selectRandomQuestions();
     loadQuestion();
 });
+
 

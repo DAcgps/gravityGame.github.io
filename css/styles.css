@@ -52,3 +52,15 @@ body {
         transform: translateY(100vh);
     }
 }
+#progress-bar-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ddd;
+}
+#progress-bar {
+    width: 0;
+    height: 10px;
+    background-color: #4CAF50;
+}
