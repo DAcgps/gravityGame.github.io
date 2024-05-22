@@ -1,27 +1,3 @@
-// async function fetchAndUseIP() {
-//     try {
-//         const response = await fetch('https://api.ipify.org?format=json');
-//         const data = await response.json();
-//         console.log('Your Public IP Address:', data.ip);
-//         return data.ip;
-//     } catch (error) {
-//         console.error('Error fetching IP:', error);
-//         return null;
-//     }
-// }
-// console.log(fetchAndUseIP());
-//
-// var ip = fetchAndUseIP().then();
-// $(document).click(function() {
-//     fetchAndUseIP().then(ip => alert("bum your ip is"+ip));
-// })
-
-
-
-
-
-
-
 $(document).ready(function() {
     const allQuestions = [
         {
@@ -104,6 +80,7 @@ $(document).ready(function() {
     let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
+    let incorrectAnswers = [];
 
     function shuffle(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -152,6 +129,13 @@ $(document).ready(function() {
         const currentQuestion = questions[currentQuestionIndex];
         if (answer === currentQuestion.correct) {
             score++;
+        }else if (answer !== currentQuestion.correct) {
+            // Step 2: If the answer is incorrect, store the question, user's answer, and correct answer
+            incorrectAnswers.push({
+                question: currentQuestion.question,
+                userAnswer: answer,
+                correctAnswer: currentQuestion.correct
+            });
         }
         currentQuestionIndex++;
         loadQuestion();
@@ -160,26 +144,30 @@ $(document).ready(function() {
     function showResult() {
         const $questionContainer = $('#question-container');
         $questionContainer.empty();
+
+        // Display score at the top
         const $resultElement = $('#result');
         $resultElement.text(`You scored ${score} out of ${questions.length}!`);
+        $questionContainer.append($resultElement);
 
         if (score === 5) {
-            $('body').css('background-color', '#ffeb3b'); // Change background color to yellow
-            const $specialMessage = $('<div></div>')
-                .addClass('special-message')
-                .text('Perfect Score! Congratulations!');
-            $('#game').append($specialMessage);
-
-            // Add confetti
-            for (let i = 0; i < 100; i++) {
-                const $confetti = $('<div></div>').addClass('confetti');
-                $confetti.css({
-                    left: Math.random() * 100 + 'vw',
-                    top: Math.random() * -20 + 'vh',
-                    animationDuration: Math.random() * 3 + 2 + 's'
-                });
-                $('body').append($confetti);
-            }
+            // Your existing code for handling a perfect score
+        } else if (incorrectAnswers.length > 0) {
+            const $incorrectAnswersElement = $('<div></div>').addClass('incorrect-answers');
+            $incorrectAnswersElement.append('<h3>Incorrect Answers:</h3>');
+            incorrectAnswers.forEach(item => {
+                const $card = $(`
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Question: ${item.question}</h5>
+                        <p class="card-text"><strong>Your Answer:</strong> <span class="text-danger">${item.userAnswer}</span></p>
+                        <p class="card-text"><strong>Correct Answer:</strong> <span class="text-success">${item.correctAnswer}</span></p>
+                    </div>
+                </div>
+            `);
+                $incorrectAnswersElement.append($card);
+            });
+            $questionContainer.append($incorrectAnswersElement);
         }
 
         $('#play-again').show();
@@ -189,6 +177,7 @@ $(document).ready(function() {
     function resetGame() {
         currentQuestionIndex = 0;
         score = 0;
+        incorrectAnswers = []; // Reset incorrect answers
         $('#result').empty();
         $('#play-again').hide();
         $('.special-message').remove();
